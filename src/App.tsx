@@ -1,5 +1,11 @@
+import UsersList from "./components/UsersList/UsersList";
+
 const App = () => {
-  return <div>Hello, React!</div>;
+  return (
+    <div>
+      <UsersList />
+    </div>
+  );
 };
 
 export default App;
