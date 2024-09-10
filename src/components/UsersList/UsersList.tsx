@@ -1,19 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserRow from "../UserRow/UserRow";
 import { AppDispatch, RootState } from "../../state/store";
 import { fetchUsers, setFilter } from "../../state/userSlice";
 import { Columns } from "../../types/types";
 import THeadCell from "../THeadCell/THeadCell";
+import SkeletonRow from "../UI/SkeletonRow";
 
 const COLUMNS: Columns[] = ["name", "username", "email", "phone"];
 
 const UsersList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { users, filter } = useSelector((state: RootState) => state.users);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    dispatch(fetchUsers())
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,7 @@ const UsersList = () => {
   );
 
   return (
-    <div className="w-full mt-5 p-3 flex items-center overflow-x-visible">
+    <div className="w-full mt-10 p-3 flex items-center overflow-x-visible">
       <table className="w-full border border-slate-400">
         <thead>
           <tr>
@@ -44,9 +48,21 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
-            <UserRow key={user.id} userData={user} />
-          ))}
+          {isLoading ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <SkeletonRow key={index} />
+            ))
+          ) : filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => (
+              <UserRow key={user.id} userData={user} />
+            ))
+          ) : (
+            <tr className="p-2 border border-slate-300 hover:bg-slate-100">
+              <td colSpan={4} className="p-2">
+                No users were found matching your search
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

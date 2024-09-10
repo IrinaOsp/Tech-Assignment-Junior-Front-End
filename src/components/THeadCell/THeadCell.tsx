@@ -31,7 +31,7 @@ const THeadCell = ({
           </button>
         </div>
         <div
-          className={`absolute z-10 top-10 w-full transition-all duration-300 ease-in-out transform ${
+          className={`absolute z-10 -top-10 w-full transition-all duration-300 ease-in-out transform ${
             isSearchVisible ? "opacity-100 max-h-20" : "opacity-0 max-h-0"
           } overflow-hidden bg-slate-300 rounded-md p-2 `}
         >
