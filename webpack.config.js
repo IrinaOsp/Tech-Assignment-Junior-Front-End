@@ -3,8 +3,11 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const isProduction = process.env.NODE_ENV === "production";
+
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
+  mode: isProduction ? "production" : "development",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     modules: [path.resolve("node_modules")],
@@ -44,11 +47,8 @@ module.exports = {
       chunkFilename: "[id].css",
     }),
   ],
-  stats: {
-    all: false,
-    errors: true,
-    errorDetails: true,
-  },
+  stats: isProduction ? "normal" : "errors-only",
+  devtool: isProduction ? false : "source-map",
   devServer: {
     client: {
       overlay: {
