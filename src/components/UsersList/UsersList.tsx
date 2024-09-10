@@ -1,8 +1,12 @@
 import { useEffect } from "react";
-import UserRow from "../UserRow/UserRow";
 import { useDispatch, useSelector } from "react-redux";
+import UserRow from "../UserRow/UserRow";
 import { AppDispatch, RootState } from "../../state/store";
 import { fetchUsers, setFilter } from "../../state/userSlice";
+import { Columns } from "../../types/types";
+import THeadCell from "../THeadCell/THeadCell";
+
+const COLUMNS: Columns[] = ["name", "username", "email", "phone"];
 
 const UsersList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,54 +29,18 @@ const UsersList = () => {
   );
 
   return (
-    <div className="w-full">
-      <table className="border border-slate-300">
+    <div className="w-full mt-5 p-3 flex items-center overflow-x-visible">
+      <table className="w-full border border-slate-400">
         <thead>
           <tr>
-            <th scope="col">
-              <span>Name</span>
-              <input
-                type="text"
-                name="name"
-                placeholder="Search by Name"
-                value={filter.name}
-                onChange={handleFilterChange}
-                className="border p-1"
+            {COLUMNS.map((column) => (
+              <THeadCell
+                key={column}
+                cellName={column}
+                filter={filter}
+                handleFilterChange={handleFilterChange}
               />
-            </th>
-            <th scope="col">
-              <span>Username</span>
-              <input
-                type="text"
-                name="username"
-                placeholder="Search by Username"
-                value={filter.username}
-                onChange={handleFilterChange}
-                className="border p-1"
-              />
-            </th>
-            <th scope="col">
-              <span>Email</span>
-              <input
-                type="text"
-                name="email"
-                placeholder="Search by Email"
-                value={filter.email}
-                onChange={handleFilterChange}
-                className="border p-1"
-              />
-            </th>
-            <th scope="col">
-              <span>Phone</span>
-              <input
-                type="text"
-                name="phone"
-                placeholder="Search by Phone"
-                value={filter.phone}
-                onChange={handleFilterChange}
-                className="border p-1"
-              />
-            </th>
+            ))}
           </tr>
         </thead>
         <tbody>

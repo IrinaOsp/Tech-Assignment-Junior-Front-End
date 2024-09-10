@@ -25,3 +25,9 @@ interface Company {
   catchPhrase: string;
   bs: string;
 }
+
+export type Columns = "name" | "username" | "email" | "phone";
+
+export type Filter = {
+  [key in Columns]: string;
+};
